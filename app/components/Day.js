@@ -27,7 +27,8 @@ function handleChange(e) {
     }
   }
   var code = e.target.attributes['data-charge-code'].value;
-  TimeActions.change({value: value, code: code});
+  var date = parseInt(e.target.attributes['data-charge-date'].value);
+  TimeActions.change({value: value, code: code, date: date});
 }
 
 function render(){
@@ -39,6 +40,7 @@ function render(){
     return (
       <td className='text-right'>
         <input
+          data-charge-date={day.date}
           data-charge-code={code}
           onChange={this.handleChange}
           value={day.data[code]}

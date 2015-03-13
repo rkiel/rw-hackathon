@@ -1,5 +1,11 @@
+var Events     = require('../constants/Events');
+var Dispatcher = require('../dispatcher/Dispatcher');
 
-function change() {
+function change(data) {
+  Dispatcher.viewAction({
+    actionType: Events.TIME_CHANGE,
+    data:       data
+  });
 }
 
 var timeActions = {
