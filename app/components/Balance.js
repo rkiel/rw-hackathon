@@ -1,11 +1,26 @@
 var React           = require('react');
-var chargeCodeStore = require('../stores/ChargeCodeStore');
+var ChargeCodeStore = require('../stores/ChargeCodeStore');
 
 function getInitialState(){
   return {
-    headings: headings(chargeCodeStore.getList()),
-    totals:   totals(chargeCodeStore.getList())
+    headings: headings(ChargeCodeStore.getList()),
+    totals:   totals(ChargeCodeStore.getList())
   }
+}
+
+function componentDidMount() {
+  ChargeCodeStore.addListener(this.changeChargeCodes);
+}
+
+function componentWillUnmount() {
+ ChargeCodeStore.removeChangeListener(this.changeChargeCodes);
+}
+
+function changeChargeCodes() {
+  this.setState({
+    headings: headings(ChargeCodeStore.getList()),
+    totals:   totals(ChargeCodeStore.getList())
+  });
 }
 
 function headings(list) {
@@ -54,8 +69,11 @@ function render(){
 }
 
 var Balance = React.createClass({
-  getInitialState: getInitialState,
-  render:          render
+  getInitialState:      getInitialState,
+  componentDidMount:    componentDidMount,
+  componentWillUnmount: componentWillUnmount,
+  changeChargeCodes:    changeChargeCodes,
+  render:               render
 });
 
 module.exports = Balance;
