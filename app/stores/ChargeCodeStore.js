@@ -1,5 +1,8 @@
-var Events     = require('../constants/Events');
-var Dispatcher = require('../dispatcher/Dispatcher');
+var Events         = require('../constants/Events');
+var Dispatcher     = require('../dispatcher/Dispatcher');
+var EventEmitter   = require('events').EventEmitter;
+var ObjectAssign   = require('react/lib/Object.assign');
+var EMITTER_CHANGE = 'change';
 
 var _store = {
   list: [
@@ -21,6 +24,8 @@ var _store = {
   }
 };
 
+var _emitter = ObjectAssign({}, EventEmitter.prototype);
+
 function getList() {
   return _store.list;
 }
@@ -30,7 +35,9 @@ function getDay() {
 }
 
 function timeChange(data) {
-  console.log(data);
+  _store.day.data[data.code] = data.value;
+  _emitter.emit(EMITTER_CHANGE);
+  console.log(_store.day.data);
 }
 
 function handleDispatch(payload){
@@ -46,11 +53,21 @@ function handleDispatch(payload){
 
 }
 
+function addListener(cb) {
+  _emitter.on(EMITTER_CHANGE, cb);
+}
+
+function removeListener(cb) {
+  _emitter.removeListener(EMITTER_CHANGE, cb);
+}
+
 Dispatcher.register(handleDispatch);
 
 var ChargeCodeStore = {
-  getDay:  getDay,
-  getList: getList
+  addListener:    addListener,
+  removeListener: removeListener,
+  getDay:         getDay,
+  getList:        getList
 }
 
 module.exports = ChargeCodeStore;
