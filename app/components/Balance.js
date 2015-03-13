@@ -1,32 +1,53 @@
 var React = require('react');
+var chargeCodeStore = require('../stores/ChargeCodeStore');
+
+function getInitialState(){
+  return {
+    list: chargeCodeStore.getList()
+  }
+}
+
 
 function render(){
+  var headings = this.state.list.map(function(item){
+    return item.title;
+  });
+
+  headings = ['DAY'].concat(headings);
+  headings = headings.concat(['TOTAL']);
+
+  headings = headings.map(function(title, index){
+    return (
+      <th key={title} className='text-right'> {title} </th>
+    )
+  });
+
+  var totals = this.state.list.map(function(item){
+    return item.total;
+  });
+  totals = [null].concat(totals);
+  totals = totals.concat([null]);
+  totals = totals.map(function(total, index) {
+    return (
+      <th className='text-right'> {total} </th>
+    );
+  });
+
   return (
     <thead>
       <tr>
-        <th className='text-right'>DAY</th>
-        <th className='text-right'>Account 1</th>
-        <th className='text-right'>Account 2</th>
-        <th className='text-right'>PTO</th>
-        <th className='text-right'>Holiday</th>
-        <th className='text-right'>Training</th>
-        <th className='text-right'>TOTAL</th>
+        { headings }
       </tr>
       <tr>
-        <th className='text-right'></th>
-        <th className='text-right'></th>
-        <th className='text-right'></th>
-        <th className='text-right'>80</th>
-        <th className='text-right'>80</th>
-        <th className='text-right'>24</th>
-        <th className='text-right'></th>
+        { totals }
       </tr>
     </thead>
   );
 }
 
 var Balance = React.createClass({
-  render: render
+  getInitialState: getInitialState,
+  render:          render
 });
 
 module.exports = Balance;
