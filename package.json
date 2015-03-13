@@ -1,0 +1,19 @@
+{
+  "name": "rw-hackathon",
+  "version": "1.0.0",
+  "description": "Hackathon project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rkiel/rw-hackathon"
+  },
+  "author": "Robert Kiel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rkiel/rw-hackathon/issues"
+  },
+  "homepage": "https://github.com/rkiel/rw-hackathon"
+}
