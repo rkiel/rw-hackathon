@@ -36,8 +36,20 @@ function getDay() {
 
 function timeChange(data) {
   _store.day.data[data.code] = data.value;
+  var total = 0;
+  Object.keys(_store.day.data).forEach(function(x) {
+    total = total + _store.day.data[x];
+  });
+  _store.day.total = total;
+
+  // TODO: works for now but needs changing when multiple days
+  _store.list.forEach(function(x) {
+    if (x.code === data.code) {
+      x.total = data.value;
+    }
+  });
+
   _emitter.emit(EMITTER_CHANGE);
-  console.log(_store.day.data);
 }
 
 function handleDispatch(payload){

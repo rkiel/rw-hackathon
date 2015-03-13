@@ -9,6 +9,21 @@ function getInitialState(){
   }
 }
 
+function componentDidMount() {
+  ChargeCodeStore.addListener(this.changeChargeCodes);
+}
+
+function componentWillUnmount() {
+ ChargeCodeStore.removeChangeListener(this.changeChargeCodes);
+}
+
+function changeChargeCodes() {
+  this.setState({
+    codes: codes(ChargeCodeStore.getList()),
+    day:   ChargeCodeStore.getDay()
+  });
+}
+
 function codes(list) {
   var codes = list.map(function(item){
     return item.code;
@@ -63,9 +78,12 @@ function render(){
 }
 
 var Day = React.createClass({
-  getInitialState: getInitialState,
-  handleChange:    handleChange,
-  render:          render
+  getInitialState:      getInitialState,
+  componentDidMount:    componentDidMount,
+  componentWillUnmount: componentWillUnmount,
+  changeChargeCodes:    changeChargeCodes,
+  handleChange:         handleChange,
+  render:               render
 });
 
 module.exports = Day;
