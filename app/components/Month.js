@@ -1,8 +1,14 @@
 var React = require('react');
+var Balance = require('./Balance');
 
 function render(){
   return (
-    <h3 className="text-center"> Timesheet </h3>
+    <div>
+      <h3 className="text-center"> Timesheet </h3>
+      <table className="table">
+        <Balance />
+      </table>
+    </div>
   );
 }
 
