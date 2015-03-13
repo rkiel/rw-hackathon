@@ -20,5 +20,9 @@
     "events": "^1.0.2",
     "flux": "^2.0.1",
     "react": "^0.12.1"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "webpack": "^1.5.3"
   }
 }
