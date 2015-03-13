@@ -15,20 +15,32 @@ function codes(list) {
   return codes;
 }
 
+function handleChange(e) {
+  if (e.target.value) {
+    console.log(e.target.value);
+  } else {
+    console.log('0');
+  }
+}
+
 function render(){
+  var style = {
+    input: { textAlign: 'right' }
+  };
   var day = this.state.day;
   var actuals = this.state.codes.map(function(code) {
     return (
       <td className='text-right'>
         <input
+          onChange={this.handleChange}
+          value={day.data[code]}
+          style={ style.input }
           ref={code}
           type='text'
-          value={day.data[code]}
-          style={ {'text-align': 'right'} }
           className='form-control' />
       </td>
     );
-  });
+  }.bind(this));
   return (
     <tr>
       <td key={day.date} className='text-right'> {day.date} </td>
@@ -40,6 +52,7 @@ function render(){
 
 var Day = React.createClass({
   getInitialState: getInitialState,
+  handleChange:    handleChange,
   render:          render
 });
 
