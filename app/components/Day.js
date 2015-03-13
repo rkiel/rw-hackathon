@@ -1,10 +1,11 @@
 var React           = require('react');
-var chargeCodeStore = require('../stores/ChargeCodeStore');
+var ChargeCodeStore = require('../stores/ChargeCodeStore');
+var TimeActions     = require('../actions/TimeActions');
 
 function getInitialState(){
   return {
-    codes: codes(chargeCodeStore.getList()),
-    day:   chargeCodeStore.getDay()
+    codes: codes(ChargeCodeStore.getList()),
+    day:   ChargeCodeStore.getDay()
   }
 }
 
@@ -16,11 +17,17 @@ function codes(list) {
 }
 
 function handleChange(e) {
+  var value = 0;
   if (e.target.value) {
-    console.log(e.target.value);
-  } else {
-    console.log('0');
+    value = e.target.value;
+    if (isNaN(value)) {
+      value = 0;
+    } else {
+      value = parseInt(value);
+    }
   }
+  var code = e.target.attributes['data-charge-code'].value;
+  TimeActions.change({value: value, code: code});
 }
 
 function render(){
@@ -32,11 +39,14 @@ function render(){
     return (
       <td className='text-right'>
         <input
+          data-charge-code={code}
           onChange={this.handleChange}
           value={day.data[code]}
           style={ style.input }
           ref={code}
           type='text'
+          size={ 2 }
+          maxLength={ 2 }
           className='form-control' />
       </td>
     );
