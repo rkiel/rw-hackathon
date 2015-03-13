@@ -1,5 +1,6 @@
-var React = require('react');
+var React   = require('react');
 var Balance = require('./Balance');
+var Day     = require('./Day');
 
 function render(){
   return (
@@ -7,6 +8,9 @@ function render(){
       <h3 className="text-center"> Timesheet </h3>
       <table className="table">
         <Balance />
+        <tbody>
+          <Day />
+        </tbody>
       </table>
     </div>
   );
