@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/rkiel/rw-hackathon/issues"
   },
-  "homepage": "https://github.com/rkiel/rw-hackathon"
+  "homepage": "https://github.com/rkiel/rw-hackathon",
+  "dependencies": {
+    "events": "^1.0.2",
+    "flux": "^2.0.1",
+    "react": "^0.12.1"
+  }
 }
