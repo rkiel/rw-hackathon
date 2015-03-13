@@ -1,3 +1,5 @@
+var Events     = require('../constants/Events');
+var Dispatcher = require('../dispatcher/Dispatcher');
 
 var _store = {
   list: [
@@ -26,6 +28,25 @@ function getList() {
 function getDay() {
   return _store.day;
 }
+
+function timeChange(data) {
+  console.log(data);
+}
+
+function handleDispatch(payload){
+  var action = payload.action;
+
+  switch(action.actionType){
+    case Events.TIME_CHANGE:
+      timeChange(action.data);
+      break;
+    default:
+      return true;
+  }
+
+}
+
+Dispatcher.register(handleDispatch);
 
 var ChargeCodeStore = {
   getDay:  getDay,
