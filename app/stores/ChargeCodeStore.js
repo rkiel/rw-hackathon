@@ -14,13 +14,18 @@ var _store = {
   ],
 
   day: {
-    date: 27,
-    data: {
-      project1: 5,
-      project2: 2,
-      pto:      1
+    '27': {
+      data: {
+        project1: 5,
+        project2: 2,
+        pto:      1
+      },
+      total: 8
     },
-    total: 8
+    '28': {
+      data: { },
+      total: 0
+    }
   }
 };
 
@@ -30,22 +35,32 @@ function getList() {
   return _store.list;
 }
 
-function getDay() {
-  return _store.day;
+function getDay(date) {
+  return _store.day[date];
 }
 
 function timeChange(data) {
-  _store.day.data[data.code] = data.value;
+  var day = _store.day[data.date];
+  day.data[data.code] = data.value;
   var total = 0;
-  Object.keys(_store.day.data).forEach(function(x) {
-    total = total + _store.day.data[x];
+  Object.keys(day.data).forEach(function(x) {
+    total = total + day.data[x];
   });
-  _store.day.total = total;
+  day.total = total;
 
-  // TODO: works for now but needs changing when multiple days
+  var monthlyTotal = 0;
+  Object.keys(_store.day).forEach(function(key) {
+    var column = _store.day[key].data;
+    var value = column[data.code];
+    if (isNaN(value)) {
+      value = 0;
+    }
+    monthlyTotal = monthlyTotal + value;
+  });
+
   _store.list.forEach(function(x) {
     if (x.code === data.code) {
-      x.total = data.value;
+      x.total = monthlyTotal;
     }
   });
 

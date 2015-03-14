@@ -9,7 +9,8 @@ function render(){
       <table className="table">
         <Balance />
         <tbody>
-          <Day />
+          <Day date={ 27 } />
+          <Day date={ 28 } />
         </tbody>
       </table>
     </div>

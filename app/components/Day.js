@@ -5,8 +5,14 @@ var TimeActions     = require('../actions/TimeActions');
 function getInitialState(){
   return {
     codes: codes(ChargeCodeStore.getList()),
-    day:   ChargeCodeStore.getDay()
+    day:   ChargeCodeStore.getDay(this.props.date)
   }
+}
+
+function propTypes() {
+  return {
+    date: React.PropTypes.number.isRequired
+  };
 }
 
 function componentDidMount() {
@@ -20,7 +26,7 @@ function componentWillUnmount() {
 function changeChargeCodes() {
   this.setState({
     codes: codes(ChargeCodeStore.getList()),
-    day:   ChargeCodeStore.getDay()
+    day:   ChargeCodeStore.getDay(this.props.date)
   });
 }
 
@@ -55,7 +61,7 @@ function render(){
     return (
       <td className='text-right'>
         <input
-          data-charge-date={day.date}
+          data-charge-date={this.props.date}
           data-charge-code={code}
           onChange={this.handleChange}
           value={day.data[code]}
@@ -70,7 +76,7 @@ function render(){
   }.bind(this));
   return (
     <tr>
-      <td key={day.date} className='text-right'> {day.date} </td>
+      <td key={this.props.date} className='text-right'> {this.props.date} </td>
       { actuals }
       <td key={day.total} className='text-right'> {day.total} </td>
     </tr>
@@ -79,6 +85,7 @@ function render(){
 
 var Day = React.createClass({
   getInitialState:      getInitialState,
+  propTypes:            propTypes(),
   componentDidMount:    componentDidMount,
   componentWillUnmount: componentWillUnmount,
   changeChargeCodes:    changeChargeCodes,
