@@ -3,7 +3,6 @@ var ChargeCodeStore = require('../stores/ChargeCodeStore');
 
 function getInitialState(){
   return {
-    headings: headings(ChargeCodeStore.getList()),
     totals:   totals(ChargeCodeStore.getList())
   }
 }
@@ -18,19 +17,8 @@ function componentWillUnmount() {
 
 function changeChargeCodes() {
   this.setState({
-    headings: headings(ChargeCodeStore.getList()),
     totals:   totals(ChargeCodeStore.getList())
   });
-}
-
-function headings(list) {
-  var headings = list.map(function(item){
-    return item.title;
-  });
-
-  headings = ['DAY'].concat(headings);
-  headings = headings.concat(['TOTAL']);
-  return headings;
 }
 
 function totals(list) {
@@ -44,12 +32,6 @@ function totals(list) {
 }
 
 function render(){
-  var headings = this.state.headings.map(function(title, index){
-    return (
-      <th key={title} className='text-right'> {title} </th>
-    )
-  });
-
   var totals = this.state.totals.map(function(total, index) {
     return (
       <th className='text-right'> {total} </th>
@@ -57,14 +39,9 @@ function render(){
   });
 
   return (
-    <thead>
-      <tr>
-        { headings }
-      </tr>
-      <tr>
-        { totals }
-      </tr>
-    </thead>
+    <tr>
+      { totals }
+    </tr>
   );
 }
 

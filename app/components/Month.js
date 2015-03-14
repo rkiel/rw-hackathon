@@ -1,4 +1,5 @@
 var React   = require('react');
+var Header  = require('./Header');
 var Balance = require('./Balance');
 var Day     = require('./Day');
 
@@ -17,10 +18,17 @@ function render(){
     <div>
       <h3 className="text-center"> Timesheet </h3>
       <table className="table">
-        <Balance />
+        <thead>
+          <Header />
+          <Balance />
+        </thead>
         <tbody>
           { days }
         </tbody>
+        <tfoot>
+          <Balance />
+          <Header />
+        </tfoot>
       </table>
     </div>
   );
