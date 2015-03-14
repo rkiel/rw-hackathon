@@ -54,9 +54,16 @@ function handleChange(e) {
 }
 
 function render(){
+  var dateHelper = new DateHelper(this.props.date);
   var style = {
-    input: { textAlign: 'right' }
+    input: { textAlign: 'right' },
+    row:   { }
   };
+  if (dateHelper.isWeekend()) {
+    style.row = {
+      'background-color': "#e6e6e6"
+    }
+  }
   var day = this.state.day;
   var actuals = this.state.codes.map(function(code) {
     return (
@@ -76,9 +83,8 @@ function render(){
       </td>
     );
   }.bind(this));
-  var dateHelper = new DateHelper(this.props.date);
   return (
-    <tr key={this.props.date.getDate()} >
+    <tr key={this.props.date.getDate()} style={ style.row } >
       <td className='text-left'> {dateHelper.dayOfWeek()} </td>
       <td className='text-right'> {this.props.date.getDate()} </td>
       { actuals }

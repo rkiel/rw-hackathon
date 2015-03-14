@@ -12,7 +12,6 @@ function propTypes() {
   };
 }
 
-
 function render(){
   var dates = [ ];
   for (var i = 1; i <= this.props.days; i++) {
