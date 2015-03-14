@@ -11,22 +11,22 @@ function headings(list) {
   var headings = list.map(function(item){
     return item.title;
   });
-
-  headings = ['','DAY'].concat(headings);
-  headings = headings.concat(['TOTAL']);
   return headings;
 }
 
 function render(){
   var headings = this.state.headings.map(function(title, index){
     return (
-      <th key={title} className='text-right'> {title} </th>
+      <th className='text-right'> {title} </th>
     )
   });
 
   return (
-    <tr>
+    <tr key='heading'>
+      <th className='text-left'> Day </th>
+      <th className='text-right'> Date </th>
       { headings }
+      <th className='text-right'> TOTAL </th>
     </tr>
   );
 }

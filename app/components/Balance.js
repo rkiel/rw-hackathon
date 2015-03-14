@@ -26,7 +26,6 @@ function totals(list,grandTotal) {
     return item.total;
   });
 
-  totals = [null,null].concat(totals);
   totals = totals.concat([grandTotal]);
   return totals;
 }
@@ -40,6 +39,8 @@ function render(){
 
   return (
     <tr>
+      <th className='text-left'> </th>
+      <th className='text-right'> </th>
       { totals }
     </tr>
   );
