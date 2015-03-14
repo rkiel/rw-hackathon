@@ -12,7 +12,7 @@ function headings(list) {
     return item.title;
   });
 
-  headings = ['DAY'].concat(headings);
+  headings = ['','DAY'].concat(headings);
   headings = headings.concat(['TOTAL']);
   return headings;
 }

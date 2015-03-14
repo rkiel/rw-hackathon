@@ -1,17 +1,18 @@
 var React           = require('react');
 var ChargeCodeStore = require('../stores/ChargeCodeStore');
 var TimeActions     = require('../actions/TimeActions');
+var DateHelper      = require('../utils/DateHelper');
 
 function getInitialState(){
   return {
     codes: codes(ChargeCodeStore.getList()),
-    day:   ChargeCodeStore.getDay(this.props.date)
+    day:   ChargeCodeStore.getDay(this.props.date.getDate())
   }
 }
 
 function propTypes() {
   return {
-    date: React.PropTypes.number.isRequired
+    date: React.PropTypes.object.isRequired
   };
 }
 
@@ -26,7 +27,7 @@ function componentWillUnmount() {
 function changeChargeCodes() {
   this.setState({
     codes: codes(ChargeCodeStore.getList()),
-    day:   ChargeCodeStore.getDay(this.props.date)
+    day:   ChargeCodeStore.getDay(this.props.date.getDate())
   });
 }
 
@@ -62,7 +63,7 @@ function render(){
       <td className='text-right'>
         <input
           placeholder={code}
-          data-charge-date={this.props.date}
+          data-charge-date={this.props.date.getDate()}
           data-charge-code={code}
           onChange={this.handleChange}
           value={day.data[code]}
@@ -75,11 +76,13 @@ function render(){
       </td>
     );
   }.bind(this));
+  var dateHelper = new DateHelper(this.props.date);
   return (
-    <tr>
-      <td key={this.props.date} className='text-right'> {this.props.date} </td>
+    <tr key={this.props.date.getDate()} >
+      <td className='text-left'> {dateHelper.dayOfWeek()} </td>
+      <td className='text-right'> {this.props.date.getDate()} </td>
       { actuals }
-      <td key={day.total} className='text-right'> {day.total} </td>
+      <td className='text-right'> {day.total} </td>
     </tr>
   );
 }

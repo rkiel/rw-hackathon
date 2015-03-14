@@ -18,6 +18,7 @@ var _store = {
 };
 
 var _emitter = ObjectAssign({}, EventEmitter.prototype);
+_emitter.setMaxListeners(0);
 
 function getList() {
   return _store.list;

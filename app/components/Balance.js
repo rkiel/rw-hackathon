@@ -26,7 +26,7 @@ function totals(list) {
     return item.total;
   });
 
-  totals = [null].concat(totals);
+  totals = [null,null].concat(totals);
   totals = totals.concat([null]);
   return totals;
 }

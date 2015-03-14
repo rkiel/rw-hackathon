@@ -1,12 +1,22 @@
-var React   = require('react');
-var Header  = require('./Header');
-var Balance = require('./Balance');
-var Day     = require('./Day');
+var React      = require('react');
+var Header     = require('./Header');
+var Balance    = require('./Balance');
+var Day        = require('./Day');
+var DateHelper = require('../utils/DateHelper');
+
+function propTypes() {
+  return {
+    year:  React.PropTypes.number.isRequired,
+    month: React.PropTypes.number.isRequired,
+    days:  React.PropTypes.number.isRequired
+  };
+}
+
 
 function render(){
   var dates = [ ];
-  for (var i = 1; i <= 31; i++) {
-    dates.push(i);
+  for (var i = 1; i <= this.props.days; i++) {
+    dates.push( new Date(this.props.year, this.props.month, i) );
   }
   var days = dates.map(function(date) {
     return (
@@ -14,9 +24,11 @@ function render(){
     );
   });
 
+  var dateHelper = new DateHelper(new Date(this.props.year,this.props.month));
+
   return (
     <div>
-      <h3 className="text-center"> Timesheet </h3>
+      <h3 className="text-center"> {dateHelper.month()} {this.props.year} </h3>
       <table className="table">
         <thead>
           <Header />
@@ -35,7 +47,8 @@ function render(){
 }
 
 var Month = React.createClass({
-  render: render
+  propTypes: propTypes(),
+  render:    render
 });
 
 module.exports = Month;
