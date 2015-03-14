@@ -3,7 +3,7 @@ var ChargeCodeStore = require('../stores/ChargeCodeStore');
 
 function getInitialState(){
   return {
-    totals:   totals(ChargeCodeStore.getList())
+    totals:   totals(ChargeCodeStore.getList(), ChargeCodeStore.getGrandTotal())
   }
 }
 
@@ -17,17 +17,17 @@ function componentWillUnmount() {
 
 function changeChargeCodes() {
   this.setState({
-    totals:   totals(ChargeCodeStore.getList())
+    totals:   totals(ChargeCodeStore.getList(), ChargeCodeStore.getGrandTotal())
   });
 }
 
-function totals(list) {
+function totals(list,grandTotal) {
   var totals = list.map(function(item){
     return item.total;
   });
 
   totals = [null,null].concat(totals);
-  totals = totals.concat([null]);
+  totals = totals.concat([grandTotal]);
   return totals;
 }
 

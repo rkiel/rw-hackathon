@@ -13,12 +13,17 @@ var _store = {
     { title: 'Training',  code: 'training', direct: false, total: 0 }
   ],
 
-  day: {
-  }
+  day: { },
+
+  grandTotal: 0
 };
 
 var _emitter = ObjectAssign({}, EventEmitter.prototype);
 _emitter.setMaxListeners(0);
+
+function getGrandTotal() {
+  return _store.grandTotal;
+}
 
 function getList() {
   return _store.list;
@@ -38,27 +43,33 @@ function getDay(date) {
 function timeChange(data) {
   var day = _store.day[data.date];
   day.data[data.code] = data.value;
-  var total = 0;
+  var rowTotal = 0;
   Object.keys(day.data).forEach(function(x) {
-    total = total + day.data[x];
+    rowTotal = rowTotal + day.data[x];
   });
-  day.total = total;
+  day.total = rowTotal;
 
-  var monthlyTotal = 0;
+  var columnTotal = 0;
   Object.keys(_store.day).forEach(function(key) {
     var column = _store.day[key].data;
     var value = column[data.code];
     if (isNaN(value)) {
       value = 0;
     }
-    monthlyTotal = monthlyTotal + value;
+    columnTotal = columnTotal + value;
   });
 
   _store.list.forEach(function(x) {
     if (x.code === data.code) {
-      x.total = monthlyTotal;
+      x.total = columnTotal;
     }
   });
+
+  _store.grandTotal = 0;
+  _store.list.forEach(function(x) {
+    _store.grandTotal = _store.grandTotal + x.total;
+  });
+
 
   _emitter.emit(EMITTER_CHANGE);
 }
@@ -90,7 +101,8 @@ var ChargeCodeStore = {
   addListener:    addListener,
   removeListener: removeListener,
   getDay:         getDay,
-  getList:        getList
+  getList:        getList,
+  getGrandTotal:  getGrandTotal
 }
 
 module.exports = ChargeCodeStore;
