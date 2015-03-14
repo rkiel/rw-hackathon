@@ -38,7 +38,8 @@ function changeChargeCodes() {
 function render(){
   var dates = [ ];
   for (var i = 1; i <= this.props.days; i++) {
-    dates.push( new Date(this.props.year, this.props.month, i) );
+    var date = new Date(this.props.year, this.props.month, i);
+    dates.push( date );
   }
   var days = dates.map(function(date) {
     return (

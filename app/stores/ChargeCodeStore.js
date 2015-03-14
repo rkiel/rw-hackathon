@@ -53,8 +53,39 @@ function getDay(date) {
       expected: (dateHelper.isWeekday() ? 8 : 0)
     }
   }
-  console.log( _store.day[key] );
   return _store.day[key];
+}
+
+function calculateMagicNumber(days) {
+  var magicNumber = 0;
+  Object.keys(days).forEach(function(key) {
+    magicNumber = magicNumber + days[key].expected;
+  });
+  return magicNumber;
+}
+
+function calculateInTheHole(days) {
+  var inTheHole = 0;
+  Object.keys(days).forEach(function(key) {
+    if (days[key].total > 0) {
+      inTheHole = inTheHole + days[key].total;
+    } else {
+      inTheHole = inTheHole + days[key].expected;
+    }
+  });
+  return inTheHole;
+}
+
+function timeStart(date) {
+  var dateHelper = new DateHelper(date);
+
+  for (var i = 1; i <= dateHelper.lastDate(); i++) {
+    var date = new Date(date.getFullYear(), date.getMonth(), i);
+    getDay(date);
+  }
+
+  _store.magicNumber = calculateMagicNumber(_store.day);
+  _store.inTheHole   = calculateInTheHole(_store.day) - _store.magicNumber;
 }
 
 function timeChange(data) {
@@ -87,20 +118,8 @@ function timeChange(data) {
     _store.grandTotal = _store.grandTotal + x.total;
   });
 
-  var magicNumber = 0;
-  var inTheHole = 0;
-  Object.keys(_store.day).forEach(function(key) {
-    magicNumber = magicNumber + _store.day[key].expected;
-    if (_store.day[key].total > 0) {
-      inTheHole = inTheHole + _store.day[key].total;
-    } else {
-      inTheHole = inTheHole + _store.day[key].expected;
-    }
-  });
-  _store.magicNumber = magicNumber
-  _store.inTheHole   = inTheHole - magicNumber;
-
-  debugger;
+  _store.magicNumber = calculateMagicNumber(_store.day);
+  _store.inTheHole   = calculateInTheHole(_store.day) - _store.magicNumber;
 
   _emitter.emit(EMITTER_CHANGE);
 }
@@ -109,6 +128,9 @@ function handleDispatch(payload){
   var action = payload.action;
 
   switch(action.actionType){
+    case Events.TIME_START:
+      timeStart(action.data);
+      break;
     case Events.TIME_CHANGE:
       timeChange(action.data);
       break;
