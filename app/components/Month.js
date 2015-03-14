@@ -1,8 +1,9 @@
-var React      = require('react');
-var Header     = require('./Header');
-var Balance    = require('./Balance');
-var Day        = require('./Day');
-var DateHelper = require('../utils/DateHelper');
+var React           = require('react');
+var Header          = require('./Header');
+var Balance         = require('./Balance');
+var Day             = require('./Day');
+var DateHelper      = require('../utils/DateHelper');
+var ChargeCodeStore = require('../stores/ChargeCodeStore');
 
 function propTypes() {
   return {
@@ -10,6 +11,28 @@ function propTypes() {
     month: React.PropTypes.number.isRequired,
     days:  React.PropTypes.number.isRequired
   };
+}
+
+function getInitialState(){
+  return {
+    magicNumber: ChargeCodeStore.getMagicNumber(),
+    inTheHole:   ChargeCodeStore.getInTheHole()
+  }
+}
+
+function componentDidMount() {
+  ChargeCodeStore.addListener(this.changeChargeCodes);
+}
+
+function componentWillUnmount() {
+ ChargeCodeStore.removeChangeListener(this.changeChargeCodes);
+}
+
+function changeChargeCodes() {
+  this.setState({
+    magicNumber: ChargeCodeStore.getMagicNumber(),
+    inTheHole:   ChargeCodeStore.getInTheHole()
+  });
 }
 
 function render(){
@@ -27,7 +50,11 @@ function render(){
 
   return (
     <div>
-      <h3 className="text-center"> {dateHelper.month()} {this.props.year} </h3>
+      <div className='row'>
+        <div className="col-md-4 text-left"><h3>{this.state.inTheHole}</h3></div>
+        <div className="col-md-4 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
+        <div className="col-md-4 text-right"><h3>{this.state.magicNumber}</h3></div>
+      </div>
       <table className="table">
         <thead>
           <Header />
@@ -46,8 +73,12 @@ function render(){
 }
 
 var Month = React.createClass({
-  propTypes: propTypes(),
-  render:    render
+  getInitialState:      getInitialState,
+  componentDidMount:    componentDidMount,
+  componentWillUnmount: componentWillUnmount,
+  changeChargeCodes:    changeChargeCodes,
+  propTypes:            propTypes(),
+  render:               render
 });
 
 module.exports = Month;

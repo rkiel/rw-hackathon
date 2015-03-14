@@ -6,7 +6,7 @@ var DateHelper      = require('../utils/DateHelper');
 function getInitialState(){
   return {
     codes: codes(ChargeCodeStore.getList()),
-    day:   ChargeCodeStore.getDay(this.props.date.getDate())
+    day:   ChargeCodeStore.getDay(this.props.date)
   }
 }
 
@@ -27,7 +27,7 @@ function componentWillUnmount() {
 function changeChargeCodes() {
   this.setState({
     codes: codes(ChargeCodeStore.getList()),
-    day:   ChargeCodeStore.getDay(this.props.date.getDate())
+    day:   ChargeCodeStore.getDay(this.props.date)
   });
 }
 
