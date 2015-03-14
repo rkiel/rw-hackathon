@@ -61,6 +61,7 @@ function render(){
     return (
       <td className='text-right'>
         <input
+          placeholder={code}
           data-charge-date={this.props.date}
           data-charge-code={code}
           onChange={this.handleChange}
