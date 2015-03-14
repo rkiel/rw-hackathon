@@ -26,13 +26,20 @@ function isWeekend() {
   return (sun === this.getDay()) || (this.getDay() === sat)
 }
 
+function isToday() {
+  var today = new Date();
+  today = new Date(today.getFullYear(),today.getMonth(),today.getDate());
+  return this.getTime() == today.getTime();
+}
+
 function DateHelper(date) {
   return {
     dayOfWeek: dayOfWeek.bind(date),
     month:     month.bind(date),
     lastDate:  lastDate.bind(date),
     isWeekday: isWeekday.bind(date),
-    isWeekend: isWeekend.bind(date)
+    isWeekend: isWeekend.bind(date),
+    isToday:   isToday.bind(date)
   }
 }
 

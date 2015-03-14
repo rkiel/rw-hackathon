@@ -59,11 +59,17 @@ function render(){
     input: { textAlign: 'right' },
     row:   { }
   };
-  if (dateHelper.isWeekend()) {
+
+  if (dateHelper.isToday()) {
     style.row = {
-      'background-color': "#e6e6e6"
+      'backgroundColor': "#B0C4DE"
+    }
+  } else if (dateHelper.isWeekend()) {
+    style.row = {
+      'backgroundColor': "#FFF8DC"
     }
   }
+
   var day = this.state.day;
   var actuals = this.state.codes.map(function(code) {
     return (
@@ -88,7 +94,7 @@ function render(){
       <td className='text-left'> {dateHelper.dayOfWeek()} </td>
       <td className='text-right'> {this.props.date.getDate()} </td>
       { actuals }
-      <td className='text-right'> {day.total} </td>
+      <td className='text-right'><strong>{day.total}</strong></td>
     </tr>
   );
 }
