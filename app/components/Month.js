@@ -7,9 +7,10 @@ var ChargeCodeStore = require('../stores/ChargeCodeStore');
 
 function propTypes() {
   return {
-    year:  React.PropTypes.number.isRequired,
-    month: React.PropTypes.number.isRequired,
-    days:  React.PropTypes.number.isRequired
+    year:     React.PropTypes.number.isRequired,
+    month:    React.PropTypes.number.isRequired,
+    startDay: React.PropTypes.number.isRequired,
+    endDay:   React.PropTypes.number.isRequired
   };
 }
 
@@ -37,7 +38,7 @@ function changeChargeCodes() {
 
 function render(){
   var dates = [ ];
-  for (var i = 1; i <= this.props.days; i++) {
+  for (var i = this.props.startDay; i <= this.props.endDay; i++) {
     var date = new Date(this.props.year, this.props.month, i);
     dates.push( date );
   }

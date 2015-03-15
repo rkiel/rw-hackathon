@@ -6,14 +6,16 @@ var TimeActions = require('./actions/TimeActions');
 var startDate   = new Date(); // new Date(2016,1);
 var dateHelper  = new DateHelper(startDate);
 var daysInMonth = dateHelper.lastDate();
+var startDay    = 1;
+var endDay      = 31;
 
-TimeActions.start(startDate);
+TimeActions.start(startDate,startDay,endDay);
 
 var App = React.createClass({
   render: function(){
     return (
       <div className="container">
-        <Month year={ startDate.getFullYear() } month={ startDate.getMonth() } days={ daysInMonth } />
+        <Month year={ startDate.getFullYear() } month={ startDate.getMonth() } startDay={ startDay } endDay={ endDay } />
       </div>
     )
   }

@@ -1,10 +1,10 @@
 var Events     = require('../constants/Events');
 var Dispatcher = require('../dispatcher/Dispatcher');
 
-function start(date) {
+function start(date,startDay,endDay) {
   var action = {
     actionType: Events.TIME_START,
-    data:       date
+    data:       {date: date, startDay: startDay, endDay: endDay}
   };
   Dispatcher.systemAction(action);
 }
