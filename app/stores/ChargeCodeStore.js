@@ -7,20 +7,20 @@ var EMITTER_CHANGE = 'change';
 
 var _store = {
   list: [
-    { title: 'Project 1', code: 'project1', direct: true,  total: 0 },
-    { title: 'Project 2', code: 'project2', direct: true,  total: 0 },
-    { title: 'PTO',       code: 'pto',      direct: false, total: 0 },
-    { title: 'Holiday',   code: 'holiday',  direct: false, total: 0 },
-    { title: 'Training',  code: 'training', direct: false, total: 0 }
+    { title: 'Project 1', code: 'project1', direct: true,  total: 0.0 },
+    { title: 'Project 2', code: 'project2', direct: true,  total: 0.0 },
+    { title: 'PTO',       code: 'pto',      direct: false, total: 0.0 },
+    { title: 'Holiday',   code: 'holiday',  direct: false, total: 0.0 },
+    { title: 'Training',  code: 'training', direct: false, total: 0.0 }
   ],
 
   day: { },
 
-  grandTotal:  0,
+  grandTotal:  0.0,
 
-  magicNumber: 0,
+  magicNumber: 0.0,
 
-  inTheHole:   0
+  inTheHole:   0.0
 };
 
 var _emitter = ObjectAssign({}, EventEmitter.prototype);
@@ -49,15 +49,15 @@ function getDay(date) {
   if (!day) {
     _store.day[key] = {
       data:     { },
-      total:    0,
-      expected: (dateHelper.isWeekday() ? 8 : 0)
+      total:    0.0,
+      expected: (dateHelper.isWeekday() ? 8.0 : 0.0)
     }
   }
   return _store.day[key];
 }
 
 function calculateMagicNumber(days) {
-  var magicNumber = 0;
+  var magicNumber = 0.0;
   Object.keys(days).forEach(function(key) {
     magicNumber = magicNumber + days[key].expected;
   });
@@ -65,9 +65,9 @@ function calculateMagicNumber(days) {
 }
 
 function calculateInTheHole(days) {
-  var inTheHole = 0;
+  var inTheHole = 0.0;
   Object.keys(days).forEach(function(key) {
-    if (days[key].total > 0) {
+    if (days[key].total > 0.0) {
       inTheHole = inTheHole + days[key].total;
     } else {
       inTheHole = inTheHole + days[key].expected;
@@ -90,19 +90,23 @@ function timeStart(date) {
 
 function timeChange(data) {
   var day = _store.day[data.date];
-  day.data[data.code] = data.value;
-  var rowTotal = 0;
+  day.data[data.code] = {
+    userInput: data.userInput,
+    value:     parseFloat(data.userInput)
+  }
+  var rowTotal = 0.0;
   Object.keys(day.data).forEach(function(x) {
-    rowTotal = rowTotal + day.data[x];
+    var value = (day.data[x].value ? day.data[x].value : '0');
+    rowTotal = rowTotal + parseFloat(value);
   });
   day.total = rowTotal;
 
-  var columnTotal = 0;
+  var columnTotal = 0.0;
   Object.keys(_store.day).forEach(function(key) {
     var column = _store.day[key].data;
-    var value = column[data.code];
+    var value = (column[data.code] ? column[data.code].value : null)
     if (isNaN(value)) {
-      value = 0;
+      value = 0.0;
     }
     columnTotal = columnTotal + value;
   });
@@ -113,13 +117,17 @@ function timeChange(data) {
     }
   });
 
-  _store.grandTotal = 0;
+  _store.grandTotal = 0.0;
   _store.list.forEach(function(x) {
     _store.grandTotal = _store.grandTotal + x.total;
   });
 
-  _store.magicNumber = calculateMagicNumber(_store.day);
-  _store.inTheHole   = calculateInTheHole(_store.day) - _store.magicNumber;
+  var magicNumber = calculateMagicNumber(_store.day);
+  var inTheHole   = calculateInTheHole(_store.day);
+  inTheHole       = inTheHole - magicNumber;
+
+  _store.magicNumber = magicNumber;
+  _store.inTheHole   = inTheHole;
 
   _emitter.emit(EMITTER_CHANGE);
 }

@@ -39,18 +39,10 @@ function codes(list) {
 }
 
 function handleChange(e) {
-  var value = 0;
-  if (e.target.value) {
-    value = e.target.value;
-    if (isNaN(value)) {
-      value = 0;
-    } else {
-      value = parseInt(value);
-    }
-  }
+  var userInput = e.target.value;
   var code = e.target.attributes['data-charge-code'].value;
   var date = parseInt(e.target.attributes['data-charge-date'].value);
-  TimeActions.change({value: value, code: code, date: date});
+  TimeActions.change({userInput: userInput, code: code, date: date});
 }
 
 function render(){
@@ -72,6 +64,7 @@ function render(){
 
   var day = this.state.day;
   var actuals = this.state.codes.map(function(code) {
+    var userInput = (day.data[code] ? day.data[code].userInput : null);
     return (
       <td className='text-right'>
         <input
@@ -79,12 +72,12 @@ function render(){
           data-charge-date={this.props.date.getDate()}
           data-charge-code={code}
           onChange={this.handleChange}
-          value={day.data[code]}
+          value={userInput}
           style={ style.input }
           ref={code}
           type='text'
-          size={ 2 }
-          maxLength={ 2 }
+          size={ 5 }
+          maxLength={ 5 }
           className='form-control' />
       </td>
     );
