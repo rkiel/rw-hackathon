@@ -49,12 +49,31 @@ function render(){
 
   var dateHelper = new DateHelper(new Date(this.props.year,this.props.month));
 
+  var color = null;
+  if (this.state.inTheHole < 0) {
+    color = 'red'
+  } else {
+    color = 'green'
+  }
+  style = {
+    magicNumber: {
+      'color': 'green'
+    }
+  }
+  if (color) {
+    style.inTheHole = {
+      'color': color
+    }
+  }
+
   return (
     <div>
       <div className='row'>
-        <div className="col-md-4 text-left"><h3>{this.state.inTheHole}</h3></div>
-        <div className="col-md-4 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
-        <div className="col-md-4 text-right"><h3>{this.state.magicNumber}</h3></div>
+        <div className="col-xs-12 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
+        </div>
+      <div className='row'>
+        <div className="col-xs-6 text-left" style={style.inTheHole}><h3>{this.state.inTheHole}</h3></div>
+        <div className="col-xs-6 text-right" style={style.magicNumber}><h3>{this.state.magicNumber}</h3></div>
       </div>
       <table className="table">
         <thead>

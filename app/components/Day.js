@@ -52,13 +52,15 @@ function render(){
     row:   { }
   };
 
+  var color = null;
   if (dateHelper.isToday()) {
-    style.row = {
-      'backgroundColor': "#B0C4DE"
-    }
+    color = "#B0C4DE"
   } else if (dateHelper.isWeekend()) {
+    color = "#FFF8DC"
+  }
+  if (color) {
     style.row = {
-      'backgroundColor': "#FFF8DC"
+      'backgroundColor': color
     }
   }
 
