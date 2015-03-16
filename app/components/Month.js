@@ -62,11 +62,9 @@ function render(){
   return (
     <div>
       <div className='row'>
-        <div className="col-xs-12 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
-        </div>
-      <div className='row'>
-        <div className="col-xs-6 text-left" style={style.inTheHole}><h3>{Format.toDollars(this.state.inTheHole)}</h3></div>
-        <div className="col-xs-6 text-right" style={style.countDown}><h3>{Format.toDollars(this.state.countDown)}</h3></div>
+        <div className="col-xs-4 text-left" style={style.inTheHole}><h3>{Format.toDollars(this.state.inTheHole)}</h3></div>
+        <div className="col-xs-4 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
+        <div className="col-xs-4 text-right" style={style.countDown}><h3>{Format.toDollars(this.state.countDown)}</h3></div>
       </div>
       <table className="table">
         <thead>
