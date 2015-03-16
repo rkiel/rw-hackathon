@@ -18,7 +18,8 @@ function propTypes() {
 function getInitialState(){
   return {
     magicNumber: ChargeCodeStore.getMagicNumber(),
-    inTheHole:   ChargeCodeStore.getInTheHole()
+    inTheHole:   ChargeCodeStore.getInTheHole(),
+    countDown:   ChargeCodeStore.getCountDown()
   }
 }
 
@@ -33,7 +34,8 @@ function componentWillUnmount() {
 function changeChargeCodes() {
   this.setState({
     magicNumber: ChargeCodeStore.getMagicNumber(),
-    inTheHole:   ChargeCodeStore.getInTheHole()
+    inTheHole:   ChargeCodeStore.getInTheHole(),
+    countDown:   ChargeCodeStore.getCountDown()
   });
 }
 
@@ -51,21 +53,10 @@ function render(){
 
   var dateHelper = new DateHelper(new Date(this.props.year,this.props.month));
 
-  var color = null;
-  if (this.state.inTheHole < 0) {
-    color = 'red'
-  } else {
-    color = 'green'
-  }
-  style = {
-    magicNumber: {
-      'color': 'green'
-    }
-  }
-  if (color) {
-    style.inTheHole = {
-      'color': color
-    }
+  var style = {
+    magicNumber: { 'color': 'green' },
+    countDown:   { 'color': 'green' },
+    inTheHole:   { 'color': (this.state.inTheHole < 0 ? 'red' : 'green') }
   }
 
   return (
@@ -75,7 +66,7 @@ function render(){
         </div>
       <div className='row'>
         <div className="col-xs-6 text-left" style={style.inTheHole}><h3>{Format.toDollars(this.state.inTheHole)}</h3></div>
-        <div className="col-xs-6 text-right" style={style.magicNumber}><h3>{Format.toDollars(this.state.magicNumber)}</h3></div>
+        <div className="col-xs-6 text-right" style={style.countDown}><h3>{Format.toDollars(this.state.countDown)}</h3></div>
       </div>
       <table className="table">
         <thead>

@@ -20,7 +20,7 @@ var _store = {
   grandTotal:  0,
 
   magicNumber: 0,
-
+  countDown:   0,
   inTheHole:   0
 };
 
@@ -37,6 +37,10 @@ function getMagicNumber() {
 
 function getInTheHole() {
   return _store.inTheHole;
+}
+
+function getCountDown() {
+  return _store.countDown;
 }
 
 function getList() {
@@ -78,6 +82,18 @@ function calculateInTheHole(days) {
   return inTheHole;
 }
 
+function calculateCountDown(days) {
+  var countDown = 0;
+  Object.keys(days).forEach(function(key) {
+    if (days[key].total > 0) {
+      // do nothing
+    } else {
+      countDown = countDown + days[key].expected;
+    }
+  });
+  return countDown;
+}
+
 function timeStart(data) {
   for (var i = data.startDay; i <= data.endDay; i++) {
     var date = new Date(data.date.getFullYear(), data.date.getMonth(), i);
@@ -86,6 +102,7 @@ function timeStart(data) {
 
   _store.magicNumber = calculateMagicNumber(_store.day);
   _store.inTheHole   = calculateInTheHole(_store.day) - _store.magicNumber;
+  _store.countDown   = calculateCountDown(_store.day);
 }
 
 function timeChange(data) {
@@ -124,10 +141,12 @@ function timeChange(data) {
 
   var magicNumber = calculateMagicNumber(_store.day);
   var inTheHole   = calculateInTheHole(_store.day);
+  var countDown   = calculateCountDown(_store.day);
   inTheHole       = inTheHole - magicNumber;
 
   _store.magicNumber = magicNumber;
   _store.inTheHole   = inTheHole;
+  _store.countDown   = countDown;
 
   _emitter.emit(EMITTER_CHANGE);
 }
@@ -165,7 +184,8 @@ var ChargeCodeStore = {
   getList:        getList,
   getGrandTotal:  getGrandTotal,
   getMagicNumber: getMagicNumber,
-  getInTheHole:   getInTheHole
+  getInTheHole:   getInTheHole,
+  getCountDown:   getCountDown
 }
 
 module.exports = ChargeCodeStore;
