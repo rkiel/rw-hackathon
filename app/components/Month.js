@@ -59,13 +59,17 @@ function render(){
     inTheHole:   { 'color': (this.state.inTheHole < 0 ? 'red' : 'green') }
   }
 
-  return (
-    <div>
+  var titleBar = (
       <div className='row'>
         <div className="col-xs-4 text-left" style={style.inTheHole}><h3>{Format.toDollars(this.state.inTheHole)}</h3></div>
         <div className="col-xs-4 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
         <div className="col-xs-4 text-right" style={style.countDown}><h3>{Format.toDollars(this.state.countDown)}</h3></div>
       </div>
+      );
+
+  return (
+    <div>
+      { titleBar }
       <table className="table">
         <thead>
           <Header />
@@ -79,6 +83,7 @@ function render(){
           <Header />
         </tfoot>
       </table>
+      { titleBar }
     </div>
   );
 }

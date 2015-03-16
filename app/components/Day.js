@@ -59,8 +59,9 @@ function handleChange(e) {
 function render(){
   var dateHelper = new DateHelper(this.props.date);
   var style = {
-    input: { textAlign: 'right' },
-    row:   { }
+    input:  { textAlign: 'right' },
+    row:    { },
+    status: { }
   };
 
   var color = null;
@@ -70,12 +71,22 @@ function render(){
     color = "#FFF8DC"
   }
   if (color) {
-    style.row = {
-      'backgroundColor': color
-    }
+    style.row.backgroundColor = color
   }
 
   var day = this.state.day;
+
+  var color = null;
+  if (0 < day.total && day.total < Format.toPennies(8)) {
+    color = "red"
+  } else if (Format.toPennies(8) <= day.total) {
+    color = "green"
+  }
+  if (color) {
+    style.status.color = color
+    style.input.color  = color
+  }
+
   var actuals = this.state.codes.map(function(code) {
     var userInput = (day.data[code] ? day.data[code].userInput : null);
     return (
@@ -97,10 +108,10 @@ function render(){
   }.bind(this));
   return (
     <tr key={this.props.date.getDate()} style={ style.row } >
-      <td className='text-left'> {dateHelper.dayOfWeek()} </td>
-      <td className='text-right'> {this.props.date.getDate()} </td>
+      <td className='text-left'> <span style={style.status}>{dateHelper.dayOfWeek()}</span> </td>
+      <td className='text-right'> <span style={style.status}>{this.props.date.getDate()}</span> </td>
       { actuals }
-      <td className='text-right'><strong>{Format.toDollars(day.total)}</strong></td>
+      <td className='text-right'><strong style={style.status}>{Format.toDollars(day.total)}</strong></td>
     </tr>
   );
 }
