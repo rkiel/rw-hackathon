@@ -2,6 +2,7 @@ var React           = require('react');
 var ChargeCodeStore = require('../stores/ChargeCodeStore');
 var TimeActions     = require('../actions/TimeActions');
 var DateHelper      = require('../utils/DateHelper');
+var Format          = require('../utils/Format');
 
 function getInitialState(){
   return {
@@ -40,9 +41,19 @@ function codes(list) {
 
 function handleChange(e) {
   var userInput = e.target.value;
+  var userValue = 0;
+  if (userInput.match(/^\d$/) ||
+      userInput.match(/^\d\d$/) ||
+      userInput.match(/^\d\.\d?\d?$/) ||
+      userInput.match(/^\d\d\.\d?\d?$/)) {
+    userValue = parseInt((parseFloat(userInput) * 100).toFixed());
+  } else {
+    userInput = '';
+    userValue = null;
+  }
   var code = e.target.attributes['data-charge-code'].value;
   var date = parseInt(e.target.attributes['data-charge-date'].value);
-  TimeActions.change({userInput: userInput, code: code, date: date});
+  TimeActions.change({userInput: userInput, userValue: userValue, code: code, date: date});
 }
 
 function render(){
@@ -89,7 +100,7 @@ function render(){
       <td className='text-left'> {dateHelper.dayOfWeek()} </td>
       <td className='text-right'> {this.props.date.getDate()} </td>
       { actuals }
-      <td className='text-right'><strong>{day.total}</strong></td>
+      <td className='text-right'><strong>{Format.toDollars(day.total)}</strong></td>
     </tr>
   );
 }

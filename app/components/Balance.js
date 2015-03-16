@@ -1,5 +1,6 @@
 var React           = require('react');
 var ChargeCodeStore = require('../stores/ChargeCodeStore');
+var Format          = require('../utils/Format');
 
 function getInitialState(){
   return {
@@ -33,7 +34,7 @@ function totals(list,grandTotal) {
 function render(){
   var totals = this.state.totals.map(function(total, index) {
     return (
-      <th className='text-right'> {total} </th>
+      <th className='text-right'> {Format.toDollars(total)} </th>
     );
   });
 
