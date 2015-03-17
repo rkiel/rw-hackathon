@@ -61,9 +61,9 @@ function render(){
 
   var titleBar = (
       <div className='row'>
-        <div className="col-xs-4 text-left" style={style.inTheHole}><h3>{Format.toDollars(this.state.inTheHole)}</h3></div>
+        <div className="col-xs-4 text-left" style={style.inTheHole}><h3>{Format.toDollars(this.state.inTheHole)} hours</h3></div>
         <div className="col-xs-4 text-center"><h3>{dateHelper.month()} {this.props.year}</h3></div>
-        <div className="col-xs-4 text-right" style={style.countDown}><h3>{Format.toDollars(this.state.countDown)}</h3></div>
+        <div className="col-xs-4 text-right" style={style.countDown}><h3>{this.state.countDown} days</h3></div>
       </div>
       );
 

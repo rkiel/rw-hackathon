@@ -87,8 +87,8 @@ function calculateCountDown(days) {
   Object.keys(days).forEach(function(key) {
     if (days[key].total > 0) {
       // do nothing
-    } else {
-      countDown = countDown + days[key].expected;
+    } else if (days[key].expected > 0) {
+      countDown = countDown + 1;
     }
   });
   return countDown;

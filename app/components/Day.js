@@ -64,23 +64,37 @@ function render(){
     status: { }
   };
 
+  var lightYellow = "#FFF8DC";
+  var darkYellow  = "#ffeb99";
+  var greyBlue    = "#B0C4DE";
+  var red         = "red"
+  var green       = "green"
+  var blue        = "#4b79b4";
+
   var color = null;
   if (dateHelper.isToday()) {
-    color = "#B0C4DE"
+    color = darkYellow;
   } else if (dateHelper.isWeekend()) {
-    color = "#FFF8DC"
+    color = greyBlue;
+  } else {
+    color = lightYellow;
   }
+
   if (color) {
     style.row.backgroundColor = color
   }
 
   var day = this.state.day;
 
-  var color = null;
-  if (0 < day.total && day.total < Format.toPennies(8)) {
-    color = "red"
-  } else if (Format.toPennies(8) <= day.total) {
-    color = "green"
+  var color           = null;
+  var fullDay         = (Format.toPennies(8) <= day.total);
+  var extraDay        = (0 < day.total && day.expected === 0);
+  var notFullDay      = (0 < day.total && day.total < Format.toPennies(8));
+  var expectedFullDay = (day.expected > 0);
+  if (expectedFullDay && notFullDay) {
+    color = red;
+  } else if (fullDay || extraDay) {
+    color = blue;
   }
   if (color) {
     style.status.color = color
