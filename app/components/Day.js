@@ -73,7 +73,7 @@ function render(){
 
   var color = null;
   if (dateHelper.isToday()) {
-    color = darkYellow;
+    color = lightYellow;
   } else if (dateHelper.isWeekend()) {
     color = greyBlue;
   } else {
