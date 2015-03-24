@@ -1,7 +1,10 @@
 module.exports = {
-  entry: "./app/App.js",
+  entry: {
+    timesheet:  "./app/Timesheet.js",
+    basketball: "./app/Basketball.js"
+  },
   output: {
-    filename: "bundle.js"
+    filename: "[name].js"
   },
   module: {
     loaders: [
