@@ -1,8 +1,9 @@
-var React       = require('react');
+var React           = require('react');
+var InactivePlayers = require('./InactivePlayers');
 
 function render() {
   return(
-      <h1>Hello</h1>
+    <InactivePlayers />
   );
 }
 
