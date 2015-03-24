@@ -4,6 +4,14 @@ var EventEmitter   = require('events').EventEmitter;
 var ObjectAssign   = require('react/lib/Object.assign');
 var EMITTER_CHANGE = 'change';
 
+function isOffense() {
+  return _store.mode === 'OFFENSE';
+}
+
+function isDefense() {
+  return _store.mode === 'DEFENSE';
+}
+
 function getActivePlayers() {
   return _store.players.filter(function(player) {
     return player.active;
@@ -36,6 +44,7 @@ var PlayerStore = {
 module.exports = PlayerStore;
 
 var _store = {
+  mode: "OFFENSE",
   players: [
     {first: 'Sarah', last: 'One',   number: 21, active: false},
     {first: 'Ruth',  last: 'Two',   number: 22, active: false},
