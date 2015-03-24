@@ -1,5 +1,6 @@
-var React       = require('react');
-var PlayerStore = require('./PlayerStore');
+var React             = require('react');
+var PlayerStore       = require('./PlayerStore');
+var Actions           = require('./Actions');
 
 function getInitialState() {
   return {
@@ -11,7 +12,7 @@ function render() {
 
   var buttons = this.state.players.map(function(player) {
     return (
-      <button key={player.last} className='btn btn-default'>{player.first}</button>
+      <button key={player.number} className='btn btn-default' onClick={_onClick.bind(this,player.number)}>{player.first}</button>
       );
   });
 
@@ -28,3 +29,7 @@ var ActivePlayers = React.createClass({
 });
 
 module.exports = ActivePlayers;
+
+function _onClick(number) {
+  Actions.moveToInactive(number);
+}
