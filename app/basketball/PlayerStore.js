@@ -20,9 +20,9 @@ module.exports = PlayerStore;
 
 var _store = {
   players: [
-    {first: 'Sarah', active: true},
-    {first: 'Ruth',  active: true},
-    {first: 'Tati',  active: false},
-    {first: 'Kiki',  active: false}
+    {first: 'Sarah', last: 'aaaa', active: true},
+    {first: 'Ruth',  last: 'bbbb', active: true},
+    {first: 'Tati',  last: 'cccc', active: false},
+    {first: 'Kiki',  last: 'dddd', active: false}
   ]
 }

@@ -3,7 +3,7 @@ var PlayerStore = require('./PlayerStore');
 
 function getInitialState() {
   return {
-    players: PlayerStore.getInactivePlayers()
+    players: PlayerStore.getActivePlayers()
   }
 }
 
@@ -22,9 +22,9 @@ function render() {
   );
 }
 
-var InactivePlayers = React.createClass({
+var ActivePlayers = React.createClass({
   getInitialState: getInitialState,
   render: render
 });
 
-module.exports = InactivePlayers;
+module.exports = ActivePlayers;

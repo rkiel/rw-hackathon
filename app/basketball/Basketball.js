@@ -1,9 +1,13 @@
 var React           = require('react');
+var ActivePlayers   = require('./ActivePlayers');
 var InactivePlayers = require('./InactivePlayers');
 
 function render() {
   return(
+      <div>
+    <ActivePlayers />
     <InactivePlayers />
+    </div>
   );
 }
 
