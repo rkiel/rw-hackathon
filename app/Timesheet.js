@@ -11,7 +11,7 @@ var endDay      = 31;
 
 TimeActions.start(startDate,startDay,endDay);
 
-var Timesheet = React.createClass({
+var App = React.createClass({
   render: function(){
     return (
       <div className="container">
@@ -22,6 +22,6 @@ var Timesheet = React.createClass({
 });
 
 React.render(
-  <Timesheet />,
+  <App />,
   document.getElementById('app')
 )

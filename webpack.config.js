@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     timesheet:  "./app/Timesheet.js",
-    basketball: "./app/Basketball.js"
+    basketball: "./app/basketball/App.js"
   },
   output: {
     filename: "[name].js"

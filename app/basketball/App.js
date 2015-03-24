@@ -1,5 +1,5 @@
 var React       = require('react');
-var Basketball  = require('./basketball/Basketball');
+var Basketball  = require('./Basketball');
 
 var App = React.createClass({
   render: function(){
