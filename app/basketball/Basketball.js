@@ -4,9 +4,9 @@ var InactivePlayers = require('./InactivePlayers');
 
 function render() {
   return(
-      <div>
-    <ActivePlayers />
-    <InactivePlayers />
+    <div>
+      <ActivePlayers />
+      <InactivePlayers />
     </div>
   );
 }

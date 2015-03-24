@@ -25,9 +25,9 @@ function render() {
   });
 
   return(
-      <div>
+    <div className='well well-sm'>
       { buttons }
-      </div>
+    </div>
   );
 }
 
