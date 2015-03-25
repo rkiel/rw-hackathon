@@ -47,16 +47,27 @@ module.exports = PlayerStore;
 
 var _store = {
   mode: "OFFENSE",
+  score: {us: 0, them: 0},
   players: [
-    {first: 'Sarah', last: 'One',   number: 21, active: false},
-    {first: 'Ruth',  last: 'Two',   number: 22, active: false},
-    {first: 'Tati',  last: 'Three', number: 23, active: false},
-    {first: 'Kiki',  last: 'Four',  number: 24, active: false}
+    {first: 'Sarah', last: 'One',   number: 21, active: false, stats: {} },
+    {first: 'Ruth',  last: 'Two',   number: 22, active: false, stats: {} },
+    {first: 'Tati',  last: 'Three', number: 23, active: false, stats: {} },
+    {first: 'Kiki',  last: 'Four',  number: 24, active: false, stats: {} }
   ]
 }
 
 var _emitter = ObjectAssign({}, EventEmitter.prototype);
 _emitter.setMaxListeners(0);
+
+function _getPlayer(number) {
+  var p;
+  _store.players.forEach(function(player) {
+    if (player.number === number) {
+      p = player;
+    }
+  });
+  return p;
+}
 
 function _moveToInactive(number) {
   _store.players.forEach(function(player) {
@@ -74,10 +85,43 @@ function _moveToActive(number) {
   });
 }
 
+function _recordOffense(number, statistic) {
+  var player = _getPlayer(number);
+  switch (statistic) {
+    case 'score 3':
+      _store.score.us += 3;
+      break;
+    case 'score 2':
+      _store.score.us += 2;
+      break;
+    case 'score 1':
+      _store.score.us += 1;
+      break;
+  }
+  if (! player.stats['offense '+statistic]) {
+    player.stats['offense '+statistic] = 0;
+  }
+  player.stats['offense '+statistic] += 1;
+}
+
+function _recordDefense(number, statistic) {
+  var player = _getPlayer(number);
+  if (! player.stats['defense '+statistic]) {
+    player.stats['defense '+statistic] = 0;
+  }
+  player.stats['defense '+statistic] += 1;
+}
+
 function _handleDispatch(payload){
   var action = payload.action;
 
   switch(action.actionType){
+    case Events.RECORD_OFFENSE:
+      _recordOffense(action.data.number, action.data.statistic);
+      break;
+    case Events.RECORD_DEFENSE:
+      _recordDefense(action.data.number, action.data.statistic);
+      break;
     case Events.MOVE_TO_INACTIVE:
       console.log("INACTIVE " + action.data);
       _moveToInactive(action.data);

@@ -18,9 +18,27 @@ function moveToActive(number) {
   Dispatcher.viewAction(action);
 }
 
+function recordOffense(number,statistic) {
+  var action = {
+    actionType: Events.RECORD_OFFENSE,
+    data:       {number: number, statistic: statistic}
+  };
+  Dispatcher.viewAction(action);
+}
+
+function recordDefense(number,statistic) {
+  var action = {
+    actionType: Events.RECORD_DEFENSE,
+    data:       {number: number, statistic: statistic}
+  };
+  Dispatcher.viewAction(action);
+}
+
 var Actions = {
   moveToActive:   moveToActive,
-  moveToInactive: moveToInactive
+  moveToInactive: moveToInactive,
+  recordOffense:  recordOffense,
+  recordDefense:  recordDefense
 };
 
 module.exports = Actions;

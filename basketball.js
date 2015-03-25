@@ -138,42 +138,42 @@
 	    if (PlayerStore.isOffense()) {
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "+3"), 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "-3")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'score 3')}, "+3"), 
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'miss 3')}, "-3")
 	        )
 	      );
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "+2"), 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "-2")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'score 2')}, "+2"), 
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'miss 2')}, "-2")
 	        )
 	      );
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "+1"), 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "-1")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'score 1')}, "+1"), 
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'miss 1')}, "-1")
 	        )
 	      );
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "Rebound")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'rebound')}, "Rebound")
 	        )
 	      );
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "Foul")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onOffense.bind(this,player.number,'foul')}, "Foul")
 	        )
 	      );
 	    }
 	    if (PlayerStore.isDefense()) {
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "Rebound")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onDefense.bind(this,player.number,'rebound')}, "Rebound")
 	        )
 	      );
 	      columns.push(
 	        React.createElement("td", null, 
-	          React.createElement("button", {className: "btn btn-default", onClick: _onClick.bind(this,player.number)}, "Foul")
+	          React.createElement("button", {className: "btn btn-default", onClick: _onDefense.bind(this,player.number,'foul')}, "Foul")
 	        )
 	      );
 	    }
@@ -204,6 +204,14 @@
 
 	function _onClick(number) {
 	  Actions.moveToInactive(number);
+	}
+
+	function _onOffense(number,statistic) {
+	  Actions.recordOffense(number,statistic);
+	}
+
+	function _onDefense(number,statistic) {
+	  Actions.recordDefense(number,statistic);
 	}
 
 	function _onStoreChange() {
@@ -244,11 +252,11 @@
 	  });
 
 	  return(
-	      React.createElement("table", {className: "table table-condensed"}, 
-	        React.createElement("tr", null, 
-	           buttons 
-	        )
+	    React.createElement("table", {className: "table table-condensed"}, 
+	      React.createElement("tr", null, 
+	         buttons 
 	      )
+	    )
 	  );
 	}
 
@@ -566,16 +574,27 @@
 
 	var _store = {
 	  mode: "OFFENSE",
+	  score: {us: 0, them: 0},
 	  players: [
-	    {first: 'Sarah', last: 'One',   number: 21, active: false},
-	    {first: 'Ruth',  last: 'Two',   number: 22, active: false},
-	    {first: 'Tati',  last: 'Three', number: 23, active: false},
-	    {first: 'Kiki',  last: 'Four',  number: 24, active: false}
+	    {first: 'Sarah', last: 'One',   number: 21, active: false, stats: {} },
+	    {first: 'Ruth',  last: 'Two',   number: 22, active: false, stats: {} },
+	    {first: 'Tati',  last: 'Three', number: 23, active: false, stats: {} },
+	    {first: 'Kiki',  last: 'Four',  number: 24, active: false, stats: {} }
 	  ]
 	}
 
 	var _emitter = ObjectAssign({}, EventEmitter.prototype);
 	_emitter.setMaxListeners(0);
+
+	function _getPlayer(number) {
+	  var p;
+	  _store.players.forEach(function(player) {
+	    if (player.number === number) {
+	      p = player;
+	    }
+	  });
+	  return p;
+	}
 
 	function _moveToInactive(number) {
 	  _store.players.forEach(function(player) {
@@ -593,10 +612,43 @@
 	  });
 	}
 
+	function _recordOffense(number, statistic) {
+	  var player = _getPlayer(number);
+	  switch (statistic) {
+	    case 'score 3':
+	      _store.score.us += 3;
+	      break;
+	    case 'score 2':
+	      _store.score.us += 2;
+	      break;
+	    case 'score 1':
+	      _store.score.us += 1;
+	      break;
+	  }
+	  if (! player.stats['offense '+statistic]) {
+	    player.stats['offense '+statistic] = 0;
+	  }
+	  player.stats['offense '+statistic] += 1;
+	}
+
+	function _recordDefense(number, statistic) {
+	  var player = _getPlayer(number);
+	  if (! player.stats['defense '+statistic]) {
+	    player.stats['defense '+statistic] = 0;
+	  }
+	  player.stats['defense '+statistic] += 1;
+	}
+
 	function _handleDispatch(payload){
 	  var action = payload.action;
 
 	  switch(action.actionType){
+	    case Events.RECORD_OFFENSE:
+	      _recordOffense(action.data.number, action.data.statistic);
+	      break;
+	    case Events.RECORD_DEFENSE:
+	      _recordDefense(action.data.number, action.data.statistic);
+	      break;
 	    case Events.MOVE_TO_INACTIVE:
 	      console.log("INACTIVE " + action.data);
 	      _moveToInactive(action.data);
@@ -637,9 +689,27 @@
 	  Dispatcher.viewAction(action);
 	}
 
+	function recordOffense(number,statistic) {
+	  var action = {
+	    actionType: Events.RECORD_OFFENSE,
+	    data:       {number: number, statistic: statistic}
+	  };
+	  Dispatcher.viewAction(action);
+	}
+
+	function recordDefense(number,statistic) {
+	  var action = {
+	    actionType: Events.RECORD_DEFENSE,
+	    data:       {number: number, statistic: statistic}
+	  };
+	  Dispatcher.viewAction(action);
+	}
+
 	var Actions = {
 	  moveToActive:   moveToActive,
-	  moveToInactive: moveToInactive
+	  moveToInactive: moveToInactive,
+	  recordOffense:  recordOffense,
+	  recordDefense:  recordDefense
 	};
 
 	module.exports = Actions;
@@ -7379,7 +7449,9 @@
 
 	var constants = {
 	  MOVE_TO_ACTIVE:   'MOVE_TO_ACTIVE',
-	  MOVE_TO_INACTIVE: 'MOVE_TO_INACTIVE'
+	  MOVE_TO_INACTIVE: 'MOVE_TO_INACTIVE',
+	  RECORD_OFFENSE:   'RECORD_OFFENSE',
+	  RECORD_DEFENSE:   'RECORD_DEFENSE'
 	}
 
 	module.exports = constants;
@@ -8143,7 +8215,7 @@
 
 	"use strict";
 
-	var emptyObject = __webpack_require__(189);
+	var emptyObject = __webpack_require__(191);
 	var invariant = __webpack_require__(135);
 
 	/**
@@ -8302,11 +8374,11 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(190);
+	var CallbackQueue = __webpack_require__(189);
 	var PooledClass = __webpack_require__(139);
 	var ReactCurrentOwner = __webpack_require__(29);
 	var ReactPerf = __webpack_require__(39);
-	var Transaction = __webpack_require__(191);
+	var Transaction = __webpack_require__(190);
 
 	var assign = __webpack_require__(17);
 	var invariant = __webpack_require__(135);
@@ -10854,9 +10926,9 @@
 	var EventPropagators = __webpack_require__(202);
 	var ExecutionEnvironment = __webpack_require__(45);
 	var ReactInputSelection = __webpack_require__(206);
-	var SyntheticCompositionEvent = __webpack_require__(208);
+	var SyntheticCompositionEvent = __webpack_require__(207);
 
-	var getTextContentAccessor = __webpack_require__(207);
+	var getTextContentAccessor = __webpack_require__(208);
 	var keyOf = __webpack_require__(147);
 
 	var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
@@ -11678,7 +11750,7 @@
 	"use strict";
 
 	var ReactUpdates = __webpack_require__(137);
-	var Transaction = __webpack_require__(191);
+	var Transaction = __webpack_require__(190);
 
 	var assign = __webpack_require__(17);
 	var emptyFunction = __webpack_require__(185);
@@ -14142,9 +14214,9 @@
 	"use strict";
 
 	var PooledClass = __webpack_require__(139);
-	var CallbackQueue = __webpack_require__(190);
+	var CallbackQueue = __webpack_require__(189);
 	var ReactPutListenerQueue = __webpack_require__(233);
-	var Transaction = __webpack_require__(191);
+	var Transaction = __webpack_require__(190);
 
 	var assign = __webpack_require__(17);
 	var emptyFunction = __webpack_require__(185);
@@ -14508,33 +14580,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule emptyObject
-	 */
-
-	"use strict";
-
-	var emptyObject = {};
-
-	if ("production" !== process.env.NODE_ENV) {
-	  Object.freeze(emptyObject);
-	}
-
-	module.exports = emptyObject;
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
 	 * @providesModule CallbackQueue
 	 */
 
@@ -14627,7 +14672,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
 
 /***/ },
-/* 191 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -14867,6 +14912,33 @@
 	};
 
 	module.exports = Transaction;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule emptyObject
+	 */
+
+	"use strict";
+
+	var emptyObject = {};
+
+	if ("production" !== process.env.NODE_ENV) {
+	  Object.freeze(emptyObject);
+	}
+
+	module.exports = emptyObject;
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
 
@@ -16474,47 +16546,6 @@
 	 * LICENSE file in the root directory of this source tree. An additional grant
 	 * of patent rights can be found in the PATENTS file in the same directory.
 	 *
-	 * @providesModule getTextContentAccessor
-	 */
-
-	"use strict";
-
-	var ExecutionEnvironment = __webpack_require__(45);
-
-	var contentKey = null;
-
-	/**
-	 * Gets the key used to access text content on a DOM node.
-	 *
-	 * @return {?string} Key used to access text content.
-	 * @internal
-	 */
-	function getTextContentAccessor() {
-	  if (!contentKey && ExecutionEnvironment.canUseDOM) {
-	    // Prefer textContent to innerText because many browsers support both but
-	    // SVG <text> elements don't support innerText even when <div> does.
-	    contentKey = 'textContent' in document.documentElement ?
-	      'textContent' :
-	      'innerText';
-	  }
-	  return contentKey;
-	}
-
-	module.exports = getTextContentAccessor;
-
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
 	 * @providesModule SyntheticCompositionEvent
 	 * @typechecks static-only
 	 */
@@ -16551,6 +16582,47 @@
 
 	module.exports = SyntheticCompositionEvent;
 
+
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule getTextContentAccessor
+	 */
+
+	"use strict";
+
+	var ExecutionEnvironment = __webpack_require__(45);
+
+	var contentKey = null;
+
+	/**
+	 * Gets the key used to access text content on a DOM node.
+	 *
+	 * @return {?string} Key used to access text content.
+	 * @internal
+	 */
+	function getTextContentAccessor() {
+	  if (!contentKey && ExecutionEnvironment.canUseDOM) {
+	    // Prefer textContent to innerText because many browsers support both but
+	    // SVG <text> elements don't support innerText even when <div> does.
+	    contentKey = 'textContent' in document.documentElement ?
+	      'textContent' :
+	      'innerText';
+	  }
+	  return contentKey;
+	}
+
+	module.exports = getTextContentAccessor;
 
 
 /***/ },
@@ -16847,12 +16919,12 @@
 
 	"use strict";
 
-	var CallbackQueue = __webpack_require__(190);
+	var CallbackQueue = __webpack_require__(189);
 	var PooledClass = __webpack_require__(139);
 	var ReactBrowserEventEmitter = __webpack_require__(153);
 	var ReactInputSelection = __webpack_require__(206);
 	var ReactPutListenerQueue = __webpack_require__(233);
-	var Transaction = __webpack_require__(191);
+	var Transaction = __webpack_require__(190);
 
 	var assign = __webpack_require__(17);
 
@@ -18678,7 +18750,7 @@
 	var ExecutionEnvironment = __webpack_require__(45);
 
 	var getNodeForCharacterOffset = __webpack_require__(246);
-	var getTextContentAccessor = __webpack_require__(207);
+	var getTextContentAccessor = __webpack_require__(208);
 
 	/**
 	 * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -18976,7 +19048,7 @@
 	var Danger = __webpack_require__(247);
 	var ReactMultiChildUpdateTypes = __webpack_require__(183);
 
-	var getTextContentAccessor = __webpack_require__(207);
+	var getTextContentAccessor = __webpack_require__(208);
 	var invariant = __webpack_require__(135);
 
 	/**
