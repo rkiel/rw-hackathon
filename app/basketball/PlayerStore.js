@@ -38,6 +38,8 @@ var PlayerStore = {
   getActivePlayers: getActivePlayers,
   getInactivePlayers: getInactivePlayers,
   addListener:        addListener,
+  isOffense:          isOffense,
+  isDefense:          isDefense,
   removeListener:     removeListener
 }
 

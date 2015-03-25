@@ -20,14 +20,18 @@ function render() {
 
   var buttons = this.state.players.map(function(player) {
     return (
-      <button key={player.number} className='btn btn-default' onClick={_onClick.bind(this,player.number)}>{player.first}</button>
+      <td>
+        <button key={player.number} className='btn btn-default' onClick={_onClick.bind(this,player.number)}>{player.first}</button>
+      </td>
       );
   });
 
   return(
-    <div className='well well-sm'>
-      { buttons }
-    </div>
+    <table className='table table-condensed'>
+      <tr>
+        { buttons }
+      </tr>
+    </table>
   );
 }
 
