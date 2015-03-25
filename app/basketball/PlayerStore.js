@@ -24,6 +24,14 @@ function getInactivePlayers() {
   });
 }
 
+function getOurScore() {
+  return _store.score.us;
+}
+
+function getTheirScore() {
+  return _store.score.them;
+}
+
 function addListener(cb) {
   _emitter.on(EMITTER_CHANGE, cb);
 }
@@ -37,6 +45,8 @@ Dispatcher.register(_handleDispatch);
 var PlayerStore = {
   getActivePlayers: getActivePlayers,
   getInactivePlayers: getInactivePlayers,
+  getOurScore:        getOurScore,
+  getTheirScore:      getTheirScore,
   addListener:        addListener,
   isOffense:          isOffense,
   isDefense:          isDefense,
@@ -90,12 +100,15 @@ function _recordOffense(number, statistic) {
   switch (statistic) {
     case 'score 3':
       _store.score.us += 3;
+      _emitter.emit(EMITTER_CHANGE);
       break;
     case 'score 2':
       _store.score.us += 2;
+      _emitter.emit(EMITTER_CHANGE);
       break;
     case 'score 1':
       _store.score.us += 1;
+      _emitter.emit(EMITTER_CHANGE);
       break;
   }
   if (! player.stats['offense '+statistic]) {
