@@ -19,8 +19,8 @@ function componentWillUnmount() {
 function render() {
   return (
     <div className="well well-sm">
-      <span>{ this.state.us }</span>
-      <span>{ this.state.them }</span>
+      <button className='btn'>{ this.state.us }</button>
+      <button className='btn'>{ this.state.them }</button>
     </div>
   );
 }
