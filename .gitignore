@@ -1,2 +1,5 @@
 .vagrant
 node_modules
+navbar.js
+timesheet.js
+basketball.js

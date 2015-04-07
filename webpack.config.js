@@ -1,5 +1,6 @@
 module.exports = {
   entry: {
+    navbar:     "./app/Navbar.js",
     timesheet:  "./app/Timesheet.js",
     basketball: "./app/basketball/App.js"
   },

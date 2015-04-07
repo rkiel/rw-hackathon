@@ -20,7 +20,8 @@
     "events": "^1.0.2",
     "flux": "^2.0.1",
     "moment": "^2.9.0",
-    "react": "^0.12.1"
+    "react": "^0.13.1",
+    "react-bootstrap": "^0.20.1"
   },
   "devDependencies": {
     "jsx-loader": "^0.12.2",
